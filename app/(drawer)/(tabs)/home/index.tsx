@@ -81,6 +81,27 @@ const HomePage = () => {
                 Flash Cards
               </Text>
             </Pressable>
+            <Pressable onPress={() => router.push('/quizzes')}>
+              <View
+                style={{
+                  width: 64,
+                  height: 64,
+                  backgroundColor: colors.primary,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 9999,
+                }}>
+                <MaterialCommunityIcons
+                  name='bookmark-box-multiple'
+                  size={40}
+                  color='white'
+                />
+              </View>
+              <Text
+                style={{ fontSize: 12, textAlign: 'center', paddingTop: 2 }}>
+                Quizzes
+              </Text>
+            </Pressable>
           </View>
         </View>
         {/* Subjects */}

@@ -80,6 +80,13 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         redirectPath='/flashcards'
       />
       <CustomDrawerItem
+        isMaterialIcon
+        materialIcon='card-multiple'
+        label='Quizzes'
+        path='/quizzes'
+        redirectPath='/quizzes'
+      />
+      <CustomDrawerItem
         label='About'
         ionIcon='information-circle'
         path='/about'
@@ -106,8 +113,12 @@ const DrawerLayout = () => {
           headerTintColor: 'white',
         })}>
         <Drawer.Screen
-          name='flashcards'
+          name='flashcards/index'
           options={{ headerShown: true, title: 'FLASHCARDS' }}
+        />
+        <Drawer.Screen
+          name='quizzes'
+          options={{ headerShown: true, title: 'QUIZZES' }}
         />
         <Drawer.Screen
           name='about'
