@@ -60,7 +60,7 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name='subjects/index'
+        name='subjects'
         options={{
           tabBarIcon: ({ focused }) => <Tab name='book' focused={focused} />,
           headerTitle: 'SUBJECTS',
