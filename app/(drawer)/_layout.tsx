@@ -34,23 +34,23 @@ const CustomDrawerItem = ({
           <MaterialCommunityIcons
             name={materialIcon}
             size={24}
-            color={pathname === path ? 'white' : colors.grey}
+            color={pathname.includes(path) ? 'white' : colors.grey}
           />
         ) : (
           <Ionicons
             name={ionIcon}
-            color={pathname === path ? 'white' : colors.grey}
+            color={pathname.includes(path) ? 'white' : colors.grey}
             size={24}
           />
         )
       }
       label={label}
       style={{
-        backgroundColor: pathname === path ? colors.primary : 'white',
+        backgroundColor: pathname.includes(path) ? colors.primary : 'white',
       }}
       labelStyle={[
         style.navItemLabel,
-        { color: pathname === path ? 'white' : colors.grey },
+        { color: pathname.includes(path) ? 'white' : colors.grey },
       ]}
       onPress={() => router.push(redirectPath)}
     />
@@ -113,7 +113,7 @@ const DrawerLayout = () => {
           headerTintColor: 'white',
         })}>
         <Drawer.Screen
-          name='flashcards/index'
+          name='flashcards'
           options={{ headerShown: true, title: 'FLASHCARDS' }}
         />
         <Drawer.Screen

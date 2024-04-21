@@ -3,8 +3,12 @@ import BaseBackground from '../../../components/base-background';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { colors } from '../../../themes/colors';
 import { useState } from 'react';
-import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { Ionicons } from '@expo/vector-icons';
+import {
+  CountdownCircleTimer,
+  OnComplete,
+} from 'react-native-countdown-circle-timer';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import ItemHeader from '../../../components/item-header';
 
 const quiz = [
   {
@@ -18,47 +22,51 @@ const quiz = [
     answer: 3,
   },
 ];
+const generateRandomString = (length: number) => {
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+  return randomString;
+};
 
 const QuizPage = () => {
   // get quiz from id
   const { id } = useLocalSearchParams<{ id: string }>();
   const [quizIndex, setQuizIndex] = useState(0);
   const [checked, setChecked] = useState<number | null>(null);
+  const [randomNumber, setRandomNumber] = useState(generateRandomString(10));
   const router = useRouter();
+
+  const nextQuestion = () => {
+    setQuizIndex((prev) => prev + 1);
+    setRandomNumber(generateRandomString(10));
+  };
+
+  const onCompleteTimer = (): void | OnComplete => {
+    if (quizIndex >= quiz.length - 1) {
+      return console.log('Quiz Done');
+    } else {
+      setQuizIndex((prev) => prev + 1);
+    }
+    return { shouldRepeat: true };
+  };
 
   return (
     <BaseBackground>
       <View style={{ flex: 1, gap: 16 }}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-          }}>
-          <Pressable onPress={() => router.back()}>
-            <Ionicons name='arrow-back' size={24} color={colors.primary} />
-          </Pressable>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '600',
-            }}>
-            Quiz Title
-          </Text>
-          <Text style={{ fontSize: 16, fontWeight: '500' }}>{`${
-            quizIndex + 1
-          }/${quiz.length}`}</Text>
-        </View>
+        <ItemHeader
+          title='Quiz Title'
+          current={quizIndex + 1}
+          max={quiz.length}
+        />
         <View style={{ alignItems: 'center' }}>
           <CountdownCircleTimer
-            onComplete={() => {
-              if (quizIndex >= quiz.length - 1) {
-                return console.log('Quiz Done');
-              } else {
-                setQuizIndex((prev) => prev + 1);
-              }
-              return { shouldRepeat: true };
-            }}
+            key={randomNumber}
+            onComplete={onCompleteTimer}
             size={120}
             isPlaying
             duration={30}
@@ -119,6 +127,18 @@ const QuizPage = () => {
             </Pressable>
           ))}
         </View>
+        <TouchableOpacity
+          onPress={nextQuestion}
+          style={{
+            paddingVertical: 16,
+            backgroundColor: colors.primary,
+            alignItems: 'center',
+            borderRadius: 10,
+          }}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+            Next
+          </Text>
+        </TouchableOpacity>
       </View>
     </BaseBackground>
   );
