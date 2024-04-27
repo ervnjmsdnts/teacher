@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 const ItemHeader = ({
   title,
   current,
-  max,
+  max = 1,
 }: {
   title: string;
   current: number;
@@ -25,6 +25,8 @@ const ItemHeader = ({
       </Pressable>
       <Text
         style={{
+          maxWidth: 280,
+          textAlign: 'center',
           fontSize: 20,
           fontWeight: '600',
         }}>

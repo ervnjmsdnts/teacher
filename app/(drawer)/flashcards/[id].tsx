@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
 import BaseBackground from '../../../components/base-background';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import ItemHeader from '../../../components/item-header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -12,12 +12,8 @@ import Animated, {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../themes/colors';
 import { Ionicons } from '@expo/vector-icons';
-
-const cards = [
-  { question: 'What is my name?', difficulty: 'easy', answer: 'yes' },
-  { question: 'What is your name?', difficulty: 'medium', answer: 'no' },
-  { question: 'What is our name?', difficulty: 'hard', answer: 'why' },
-];
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 interface Props {
   question: string;
@@ -25,6 +21,16 @@ interface Props {
   isFront: boolean;
   textHidden?: boolean;
 }
+
+type FlashcardsType = {
+  id: string;
+  name: string;
+  questions: {
+    question: string;
+    answer: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+  }[];
+};
 
 const LearnCard = ({ question, isFront, textHidden, answer }: Props) => {
   return (
@@ -68,9 +74,25 @@ const LearnCard = ({ question, isFront, textHidden, answer }: Props) => {
 
 const FlashcardPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const [cards, setCards] = useState<FlashcardsType>({} as FlashcardsType);
+  const [isDone, setIsDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
   const [showFront, setShowFront] = useState(true);
   const [textHidden, setTextHidden] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const docRef = doc(db, 'flashcards', `${id}`);
+      const snapshot = await getDoc(docRef);
+      setCards({
+        id: snapshot.id,
+        name: snapshot.data()?.name,
+        questions: snapshot.data()?.questions,
+      });
+    })();
+  }, [id]);
 
   const rotate = useSharedValue(0);
 
@@ -107,84 +129,137 @@ const FlashcardPage = () => {
   };
 
   const onNextCard = () => {
-    setTextHidden(true);
-    setTimeout(() => {
-      setCurrentCard((prev) => prev + 1);
-      setTextHidden(false);
-    }, 600);
+    if (currentCard < cards.questions.length - 1) {
+      setTextHidden(true);
+      setTimeout(() => {
+        setCurrentCard((prev) => prev + 1);
+        setTextHidden(false);
+      }, 600);
+    } else {
+      setIsDone(true);
+    }
   };
 
   return (
     <BaseBackground>
       <View style={{ flex: 1, gap: 16 }}>
-        <ItemHeader
-          title='Flashcard title'
-          current={currentCard + 1}
-          max={cards.length}
-        />
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          }}>
-          <Animated.View
-            style={[
-              { backfaceVisibility: 'hidden', position: 'absolute' },
-              frontAnimatedStyles,
-            ]}>
-            <LearnCard
-              question={cards[currentCard].question}
-              answer={cards[currentCard].answer}
-              isFront={true}
-              textHidden={textHidden}
+        {cards && cards.id && (
+          <>
+            <ItemHeader
+              title={cards.name}
+              current={currentCard + 1}
+              max={cards.questions.length}
             />
-          </Animated.View>
-          <Animated.View
-            style={[{ backfaceVisibility: 'hidden' }, backAnimatedStyles]}>
-            <LearnCard
-              question={cards[currentCard].question}
-              answer={cards[currentCard].answer}
-              isFront={false}
-            />
-          </Animated.View>
-        </View>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            style={{
-              padding: 8,
-            }}
-            onPress={() => (!showFront ? onShowQuestion() : onShowAnswer())}>
-            <Text
-              style={{
-                color: colors.primary,
-                fontSize: 18,
-                fontWeight: '600',
-              }}>
-              {!showFront ? 'Show Questions' : 'Show Answers'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onNextCard}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 8,
-              padding: 8,
-              backgroundColor: colors.primary,
-              borderRadius: 10,
-            }}>
-            <Text style={{ fontSize: 18, color: 'white', fontWeight: '600' }}>
-              Next
-            </Text>
-            <Ionicons name='arrow-forward' size={24} color='white' />
-          </TouchableOpacity>
-        </View>
+            {!isDone ? (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Animated.View
+                    style={[
+                      { backfaceVisibility: 'hidden', position: 'absolute' },
+                      frontAnimatedStyles,
+                    ]}>
+                    <LearnCard
+                      question={cards.questions[currentCard].question}
+                      answer={cards.questions[currentCard].answer}
+                      isFront={true}
+                      textHidden={textHidden}
+                    />
+                  </Animated.View>
+                  <Animated.View
+                    style={[
+                      { backfaceVisibility: 'hidden' },
+                      backAnimatedStyles,
+                    ]}>
+                    <LearnCard
+                      question={cards.questions[currentCard].question}
+                      answer={cards.questions[currentCard].answer}
+                      isFront={false}
+                    />
+                  </Animated.View>
+                </View>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      padding: 8,
+                    }}
+                    onPress={() =>
+                      !showFront ? onShowQuestion() : onShowAnswer()
+                    }>
+                    <Text
+                      style={{
+                        color: colors.primary,
+                        fontSize: 18,
+                        fontWeight: '600',
+                      }}>
+                      {!showFront ? 'Show Questions' : 'Show Answers'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={onNextCard}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 8,
+                      padding: 8,
+                      backgroundColor: colors.primary,
+                      borderRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: 'white',
+                        fontWeight: '600',
+                      }}>
+                      Next
+                    </Text>
+                    <Ionicons name='arrow-forward' size={24} color='white' />
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                }}>
+                <Text style={{ fontSize: 20, fontWeight: '600' }}>Done</Text>
+                <TouchableOpacity
+                  onPress={() => router.back()}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}>
+                  <Ionicons
+                    name='arrow-back'
+                    size={20}
+                    color={colors.primary}
+                  />
+                  <Text
+                    style={{
+                      color: colors.primary,
+                      fontSize: 16,
+                      fontWeight: '500',
+                    }}>
+                    Go Back
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </>
+        )}
       </View>
     </BaseBackground>
   );

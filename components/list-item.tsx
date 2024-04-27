@@ -24,7 +24,9 @@ const ListItem = ({ route, title }: { route: string; title: string }) => {
         shadowRadius: 3,
         gap: 8,
       }}>
-      <Text style={{ fontSize: 18, fontWeight: '600' }}>{title}</Text>
+      <Text style={{ fontSize: 18, fontWeight: '600', maxWidth: 250 }}>
+        {title}
+      </Text>
       <Ionicons
         style={{ marginLeft: 8 }}
         name='arrow-forward'

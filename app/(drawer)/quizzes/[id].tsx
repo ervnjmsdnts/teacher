@@ -13,12 +13,12 @@ import ItemHeader from '../../../components/item-header';
 const quiz = [
   {
     question: 'What is my name',
-    options: ['hello', 'hi', 'how are you', 'are you gay'],
+    options: ['John', 'Jane', 'Angelo', 'Anthony'],
     answer: 1,
   },
   {
     question: 'What is your name',
-    options: ['nigga', 'acoustic', 'diaper', 'man'],
+    options: ['Joseph', 'Vandal', 'Sheriff', 'Ghost'],
     answer: 3,
   },
 ];
@@ -43,6 +43,7 @@ const QuizPage = () => {
 
   const nextQuestion = () => {
     setQuizIndex((prev) => prev + 1);
+    setChecked(null);
     setRandomNumber(generateRandomString(10));
   };
 
