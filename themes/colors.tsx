@@ -4,4 +4,5 @@ export const colors = {
   'primary-muted': '#75d9d4',
   'light-grey': '#F3F2F2',
   'primary-dark': '#3a706d',
+  'primary-start': '#20AAA5',
 };
