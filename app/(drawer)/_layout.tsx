@@ -67,7 +67,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         redirectPath='/(drawer)/(tabs)/home'
       />
       <CustomDrawerItem
-        label='Subject'
+        label='Reviewers'
         ionIcon='book'
         path='/subjects'
         redirectPath='/(drawer)/(tabs)/subjects'

@@ -1,6 +1,4 @@
 import { Stack } from 'expo-router';
-import { colors } from '../../../../themes/colors';
-import { DrawerToggleButton } from '@react-navigation/drawer';
 
 const SubjectsLayout = () => {
   return (
