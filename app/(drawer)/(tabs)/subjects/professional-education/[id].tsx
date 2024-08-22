@@ -1,18 +1,17 @@
 import { useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
-import BaseBackground from '../../../../components/base-background';
-import BackFloatingButton from '../../../../components/back-floating-button';
-import Pdf, { Source } from 'react-native-pdf';
 import { useEffect, useState } from 'react';
+import Pdf, { Source } from 'react-native-pdf';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../../../../firebase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { colors } from '../../../../themes/colors';
+import { storage } from '../../../../../firebase';
+import BaseBackground from '../../../../../components/base-background';
+import BackFloatingButton from '../../../../../components/back-floating-button';
 
-const SubjectPage = () => {
+export default function SubjectPDF() {
   const [resource, setResource] = useState<Source>({ uri: '', cache: false });
   const [reload, setReload] = useState(false);
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const params = useLocalSearchParams<{ id: string }>();
 
   const onReloadPDF = () => {
     setReload((prev) => !prev);
@@ -21,19 +20,19 @@ const SubjectPage = () => {
   useEffect(() => {
     (async () => {
       setResource({});
-      const storageRef = ref(storage, `reviewers/${id}`);
+      const storageRef = ref(storage, `professionalEducation/${params.id}`);
 
       const url = await getDownloadURL(storageRef);
 
       setResource({ uri: url, cache: false });
     })();
-  }, [id, reload]);
+  }, [reload, params.id]);
 
   return (
     <BaseBackground>
       <View style={{ position: 'relative', flex: 1, gap: 8 }}>
         <BackFloatingButton />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={onReloadPDF}
           style={{
             alignSelf: 'flex-end',
@@ -65,10 +64,8 @@ const SubjectPage = () => {
           />
         ) : (
           <Text>Loading PDF...</Text>
-        )}
+        )} */}
       </View>
     </BaseBackground>
   );
-};
-
-export default SubjectPage;
+}

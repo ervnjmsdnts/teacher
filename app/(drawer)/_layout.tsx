@@ -9,6 +9,7 @@ import {
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import { usePathname, useRouter } from 'expo-router';
+import { getAuth, signOut } from 'firebase/auth';
 
 const CustomDrawerItem = ({
   isMaterialIcon = false,
@@ -92,6 +93,17 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         path='/about'
         redirectPath='/about'
       />
+      <DrawerItem
+        onPress={() => signOut(getAuth())}
+        icon={() => (
+          <MaterialCommunityIcons name='logout' size={24} color={colors.grey} />
+        )}
+        label='Sign Out'
+        style={{
+          backgroundColor: 'white',
+        }}
+        labelStyle={[style.navItemLabel, { color: colors.grey }]}
+      />
     </DrawerContentScrollView>
   );
 };
@@ -109,7 +121,7 @@ const DrawerLayout = () => {
             fontSize: 24,
             fontWeight: 'bold',
           },
-          headerStatusBarHeight: 16,
+          headerStatusBarHeight: 48,
           headerTintColor: 'white',
         })}>
         <Drawer.Screen

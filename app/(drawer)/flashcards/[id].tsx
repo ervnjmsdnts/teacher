@@ -154,9 +154,9 @@ const FlashcardPage = () => {
               <>
                 <View
                   style={{
+                    paddingTop: 24,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flex: 1,
                   }}>
                   <Animated.View
                     style={[
@@ -201,7 +201,7 @@ const FlashcardPage = () => {
                         fontSize: 18,
                         fontWeight: '600',
                       }}>
-                      {!showFront ? 'Show Questions' : 'Show Answers'}
+                      {!showFront ? 'Show Question' : 'Show Answer'}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity

@@ -179,7 +179,7 @@ const QuizPage = () => {
               max={quiz.questions.length}
             />
             {!showResults ? (
-              <>
+              <ScrollView>
                 <View style={{ alignItems: 'center' }}>
                   <CountdownCircleTimer
                     key={randomNumber}
@@ -211,7 +211,7 @@ const QuizPage = () => {
                   {`${quiz.questions[quizIndex].question}`}
                 </Text>
                 {/* Options */}
-                <View>
+                <View style={{ paddingBottom: 8 }}>
                   {quiz.questions[quizIndex].options.map((option, index) => (
                     <Pressable
                       key={index}
@@ -230,6 +230,7 @@ const QuizPage = () => {
                         style={{
                           fontSize: 14,
                           fontWeight: '600',
+                          maxWidth: 300,
                           color: checked === index ? 'white' : 'black',
                         }}>
                         {option}
@@ -266,7 +267,7 @@ const QuizPage = () => {
                     Next
                   </Text>
                 </TouchableOpacity>
-              </>
+              </ScrollView>
             ) : (
               <Result
                 numberOfQuestions={quiz.questions.length}

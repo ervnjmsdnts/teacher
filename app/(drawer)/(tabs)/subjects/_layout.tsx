@@ -7,7 +7,11 @@ const SubjectsLayout = () => {
         headerShown: false,
       }}>
       <Stack.Screen name='index' />
-      <Stack.Screen name='[id]' />
+      <Stack.Screen name='general-education/index' />
+      <Stack.Screen name='general-education/[subject]/index' />
+      <Stack.Screen name='general-education/[subject]/[id]' />
+      <Stack.Screen name='professional-education/index' />
+      <Stack.Screen name='professional-education/[id]' />
     </Stack>
   );
 };

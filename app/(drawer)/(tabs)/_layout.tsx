@@ -50,7 +50,7 @@ const TabsLayout = () => {
           fontSize: 24,
           fontWeight: 'bold',
         },
-        headerStatusBarHeight: 16,
+        headerStatusBarHeight: 48,
       }}>
       <Tabs.Screen
         name='home'
@@ -63,7 +63,7 @@ const TabsLayout = () => {
         name='subjects'
         options={{
           tabBarIcon: ({ focused }) => <Tab name='book' focused={focused} />,
-          headerTitle: 'SUBJECTS',
+          headerTitle: 'REVIEWERS',
         }}
       />
     </Tabs>
