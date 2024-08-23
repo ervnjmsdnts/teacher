@@ -45,7 +45,7 @@ const QuizzesPage = () => {
               {quizzes.map((quiz) => (
                 <NavigateButton
                   key={quiz.id}
-                  to={`/flashcards/${quiz.id}`}
+                  to={`/quizzes/${quiz.id}`}
                   subject={quiz.name}
                   LeftIcon={
                     <MaterialCommunityIcons
