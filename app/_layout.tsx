@@ -11,7 +11,6 @@ export default function RootLayout() {
   const segments = useSegments();
 
   const onAuthStateChanged = (user: User | null) => {
-    console.log('onAuthStateChanged: ', user);
     setUser(user);
     if (initializing) setInitializing(false);
   };

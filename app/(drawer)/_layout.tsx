@@ -82,10 +82,16 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       />
       <CustomDrawerItem
         isMaterialIcon
-        materialIcon='card-multiple'
+        materialIcon='bookmark-box-multiple'
         label='Quizzes'
         path='/quizzes'
         redirectPath='/quizzes'
+      />
+      <CustomDrawerItem
+        label='Analytics'
+        ionIcon='analytics-sharp'
+        path='/analytics'
+        redirectPath='/analytics'
       />
       <CustomDrawerItem
         label='About'

@@ -5,7 +5,7 @@ const AboutPage = () => {
   return (
     <BaseBackground>
       <ScrollView>
-        <View style={{ gap: 16 }}>
+        <View style={{ gap: 16, paddingBottom: 16 }}>
           <Text style={{ fontSize: 16 }}>
             Welcome to TEACHER—your ultimate companion for acing the Licensure
             Examination for Teachers (LET). Our app is designed to streamline

@@ -66,6 +66,15 @@ const TabsLayout = () => {
           headerTitle: 'REVIEWERS',
         }}
       />
+      <Tabs.Screen
+        name='analytics'
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Tab name='analytics-sharp' focused={focused} />
+          ),
+          headerTitle: 'ANALYTICS',
+        }}
+      />
     </Tabs>
   );
 };

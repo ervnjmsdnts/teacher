@@ -43,72 +43,111 @@ const HomePage = () => {
           <Text style={{ fontSize: 16, fontWeight: '600' }}>Activities</Text>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              paddingHorizontal: 8,
-              paddingVertical: 16,
+              padding: 16,
+              gap: 8,
               borderRadius: 20,
               backgroundColor: colors['light-grey'],
             }}>
-            <Pressable onPress={() => router.push('/(drawer)/(tabs)/subjects')}>
-              <View
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <Pressable
                 style={{
-                  width: 64,
-                  height: 64,
                   backgroundColor: colors.primary,
-                  alignItems: 'center',
+                  flex: 1,
+                  padding: 32,
                   justifyContent: 'center',
-                  borderRadius: 9999,
-                }}>
+                  borderRadius: 10,
+                  alignItems: 'center',
+                }}
+                onPress={() => router.push('/(drawer)/(tabs)/subjects')}>
                 <Ionicons name='book' size={40} color='white' />
-              </View>
-              <Text
-                style={{ fontSize: 12, textAlign: 'center', paddingTop: 2 }}>
-                Reviewers
-              </Text>
-            </Pressable>
-            <Pressable onPress={() => router.push('/flashcards')}>
-              <View
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textAlign: 'center',
+                    paddingTop: 2,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  Reviewers
+                </Text>
+              </Pressable>
+              <Pressable
                 style={{
-                  width: 64,
-                  height: 64,
                   backgroundColor: colors.primary,
-                  alignItems: 'center',
+                  flex: 1,
+                  padding: 32,
+                  borderRadius: 10,
                   justifyContent: 'center',
-                  borderRadius: 9999,
-                }}>
+                  alignItems: 'center',
+                }}
+                onPress={() => router.push('/flashcards')}>
                 <MaterialCommunityIcons
                   name='card-multiple'
                   size={40}
                   color='white'
                 />
-              </View>
-              <Text
-                style={{ fontSize: 12, textAlign: 'center', paddingTop: 2 }}>
-                Flash Cards
-              </Text>
-            </Pressable>
-            <Pressable onPress={() => router.push('/quizzes')}>
-              <View
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textAlign: 'center',
+                    paddingTop: 2,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  Flash Cards
+                </Text>
+              </Pressable>
+            </View>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <Pressable
+                onPress={() => router.push('/quizzes')}
                 style={{
-                  width: 64,
-                  height: 64,
                   backgroundColor: colors.primary,
-                  alignItems: 'center',
+                  flex: 1,
+                  padding: 32,
+                  borderRadius: 10,
                   justifyContent: 'center',
-                  borderRadius: 9999,
+                  alignItems: 'center',
                 }}>
                 <MaterialCommunityIcons
                   name='bookmark-box-multiple'
                   size={40}
                   color='white'
                 />
-              </View>
-              <Text
-                style={{ fontSize: 12, textAlign: 'center', paddingTop: 2 }}>
-                Quizzes
-              </Text>
-            </Pressable>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textAlign: 'center',
+                    paddingTop: 2,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  Quizzes
+                </Text>
+              </Pressable>
+              <Pressable
+                style={{
+                  backgroundColor: colors.primary,
+                  flex: 1,
+                  padding: 32,
+                  borderRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => router.push('/analytics')}>
+                <Ionicons name='analytics-sharp' size={40} color='white' />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textAlign: 'center',
+                    paddingTop: 2,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  Analytics
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </ScrollView>

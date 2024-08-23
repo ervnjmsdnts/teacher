@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import BaseBackground from '../../../../../../components/base-background';
 import { useLocalSearchParams } from 'expo-router';
 import BackFloatingButton from '../../../../../../components/back-floating-button';
@@ -49,7 +49,7 @@ export default function SpecificSubject() {
             ))}
           </>
         ) : (
-          <Text>Loading Modules...</Text>
+          <ActivityIndicator size='large' />
         )}
       </View>
     </BaseBackground>

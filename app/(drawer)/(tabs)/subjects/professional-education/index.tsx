@@ -3,7 +3,7 @@ import BaseBackground from '../../../../../components/base-background';
 import { listAll, ref } from 'firebase/storage';
 import { storage } from '../../../../../firebase';
 import BackFloatingButton from '../../../../../components/back-floating-button';
-import { ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import NavigateButton from '../../../../../components/navigate-button';
 import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../../../../../themes/colors';
@@ -48,7 +48,7 @@ export default function ProfessionalEducation() {
               ))}
             </>
           ) : (
-            <Text>Loading Modules...</Text>
+            <ActivityIndicator size='large' />
           )}
         </View>
       </ScrollView>

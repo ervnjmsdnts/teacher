@@ -1,9 +1,11 @@
-import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import BaseBackground from '../../../components/base-background';
-import ListItem from '../../../components/list-item';
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import NavigateButton from '../../../components/navigate-button';
+import { colors } from '../../../themes/colors';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type Quiz = {
   id: string;
@@ -38,13 +40,26 @@ const QuizzesPage = () => {
     <BaseBackground>
       <ScrollView>
         <View style={{ gap: 24, padding: 8 }}>
-          {quizzes.map((quiz) => (
-            <ListItem
-              key={quiz.id}
-              title={quiz.name}
-              route={`/quizzes/${quiz.id}`}
-            />
-          ))}
+          {quizzes.length > 0 ? (
+            <>
+              {quizzes.map((quiz) => (
+                <NavigateButton
+                  key={quiz.id}
+                  to={`/flashcards/${quiz.id}`}
+                  subject={quiz.name}
+                  LeftIcon={
+                    <MaterialCommunityIcons
+                      name='note'
+                      size={30}
+                      color={colors.primary}
+                    />
+                  }
+                />
+              ))}
+            </>
+          ) : (
+            <ActivityIndicator size='large' />
+          )}
         </View>
       </ScrollView>
     </BaseBackground>

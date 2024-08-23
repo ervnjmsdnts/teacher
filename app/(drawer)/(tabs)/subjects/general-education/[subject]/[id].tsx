@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import BackFloatingButton from '../../../../../../components/back-floating-button';
 import BaseBackground from '../../../../../../components/base-background';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Pdf, { Source } from 'react-native-pdf';
 import { getDownloadURL, ref } from 'firebase/storage';
@@ -36,7 +36,7 @@ export default function SubjectPDF() {
     <BaseBackground>
       <View style={{ position: 'relative', flex: 1, gap: 8 }}>
         <BackFloatingButton />
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={onReloadPDF}
           style={{
             alignSelf: 'flex-end',
@@ -67,8 +67,8 @@ export default function SubjectPDF() {
             onLoadComplete={(numPages) => console.log(numPages)}
           />
         ) : (
-          <Text>Loading PDF...</Text>
-        )} */}
+          <ActivityIndicator size='large' />
+        )}
       </View>
     </BaseBackground>
   );
