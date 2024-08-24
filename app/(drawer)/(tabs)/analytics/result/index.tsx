@@ -48,11 +48,7 @@ export default function Result() {
               axisOptions={{
                 font,
                 labelOffset: 5,
-                tickCount: {
-                  x: data.length,
-                  y: totalItemsPerQuiz,
-                },
-                formatXLabel: (value) => value,
+                tickCount: { x: data.length, y: 5 },
                 lineColor: '#71717a',
                 labelColor: 'black',
               }}
