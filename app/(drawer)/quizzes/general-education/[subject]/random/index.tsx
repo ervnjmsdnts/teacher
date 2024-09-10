@@ -1,18 +1,19 @@
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
-import BaseBackground from '../../../components/base-background';
 import { useLocalSearchParams } from 'expo-router';
-import { colors } from '../../../themes/colors';
 import { useEffect, useState } from 'react';
 import {
   CountdownCircleTimer,
   OnComplete,
 } from 'react-native-countdown-circle-timer';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import ItemHeader from '../../../components/item-header';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { getAuth } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
+import { db } from '../../../../../../firebase';
+import BaseBackground from '../../../../../../components/base-background';
+import ItemHeader from '../../../../../../components/item-header';
+import { colors } from '../../../../../../themes/colors';
+import Result from '../../../../../../components/result';
+import { shuffleArray } from '../../../../../../utils';
 
 type Questions = {
   answer: number;
@@ -38,92 +39,10 @@ const generateRandomString = (length: number) => {
   return randomString;
 };
 
-function Result({
-  score,
-  numberOfQuestions,
-  userAnswers,
-  questions,
-}: {
-  score: number;
-  numberOfQuestions: number;
-  userAnswers: (number | null)[];
-  questions: Questions[];
-}) {
-  return (
-    <View style={{ flex: 1 }}>
-      <ScrollView>
-        <View
-          style={{
-            marginBottom: 8,
-            borderRadius: 10,
-            padding: 8,
-            backgroundColor: colors.primary,
-          }}>
-          <Text style={{ fontSize: 16, marginBottom: 4, color: 'white' }}>
-            Your Score
-          </Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 40, fontWeight: '700', color: 'white' }}>
-              {score}
-            </Text>
-            <Text
-              style={{
-                fontSize: 24,
-                color: 'white',
-                marginBottom: 4,
-                alignSelf: 'flex-end',
-              }}>
-              /{numberOfQuestions}
-            </Text>
-          </View>
-        </View>
-        <View style={{ gap: 8 }}>
-          {questions.map((question, questionIndex) => (
-            <View key={questionIndex}>
-              <Text
-                style={{ fontWeight: '700', fontSize: 18, marginBottom: 4 }}>
-                {questionIndex + 1}. {question.question}
-              </Text>
-              <View style={{ gap: 8 }}>
-                {question.options.map((option, optionIndex) => (
-                  <View
-                    key={optionIndex}
-                    style={{
-                      padding: 8,
-                      borderRadius: 10,
-                      backgroundColor:
-                        userAnswers[questionIndex] === optionIndex
-                          ? question.answer === optionIndex
-                            ? 'green'
-                            : 'red'
-                          : question.answer === optionIndex
-                          ? colors.primary
-                          : 'white',
-                    }}>
-                    <Text
-                      style={{
-                        color:
-                          userAnswers[questionIndex] !== optionIndex &&
-                          question.answer !== optionIndex
-                            ? 'black'
-                            : 'white',
-                      }}>
-                      {option}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
-  );
-}
-
 const QuizPage = () => {
   // get quiz from id
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const params = useLocalSearchParams<{ subject: string }>();
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [quiz, setQuiz] = useState<Quiz>({} as Quiz);
   const [showResults, setShowResults] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0);
@@ -135,27 +54,49 @@ const QuizPage = () => {
 
   useEffect(() => {
     (async () => {
-      const quizRef = doc(db, 'quizzes', `${id}`);
-      const snapshot = await getDoc(quizRef);
-      setQuiz({
-        id: snapshot.id,
-        type: snapshot.data()?.type,
-        name: snapshot.data()?.name,
-        questions: snapshot.data()?.questions,
-      });
+      const quizzesRef = collection(db, 'quizzes');
+      const q = query(quizzesRef, where('type', '==', params.subject));
+      const snapshot = await getDocs(q);
+      let data: Quiz[] = [];
+      snapshot.forEach((doc) =>
+        data.push({
+          id: doc.id,
+          name: doc.data().name,
+          type: doc.data().type,
+          questions: doc.data().questions,
+        }),
+      );
+
+      setQuizzes(data);
     })();
-  }, [id]);
+  }, []);
+
+  useEffect(() => {
+    if (quizzes.length > 0) {
+      const randomizeQuestions = () => {
+        const allQuestions = quizzes.flatMap((quiz) => quiz.questions);
+
+        const shuffledQuestions = shuffleArray([...allQuestions]);
+
+        const limitedQuestions = shuffledQuestions.slice(0, 50);
+
+        const quiz = {
+          id: '1',
+          name: 'Randomized',
+          type: 'random',
+          questions: limitedQuestions,
+        } as Quiz;
+
+        return quiz;
+      };
+
+      setQuiz(randomizeQuestions());
+    }
+  }, [quizzes.length]);
 
   const saveResults = async (finalScore: number) => {
     try {
       setIsLoadingResults(true);
-      await addDoc(collection(db, 'user-result-quizzes'), {
-        score: finalScore,
-        userId: getAuth().currentUser?.uid,
-        quizName: quiz.name,
-        createdAt: new Date().getTime(),
-        quizItems: quiz.questions.length,
-      });
     } catch (error) {
       const err = error as FirebaseError;
       alert(err.message);
@@ -207,7 +148,7 @@ const QuizPage = () => {
           <ActivityIndicator size='large' />
         ) : (
           <>
-            {quiz && quiz.id ? (
+            {quiz && quiz.id && quiz.questions.length > 0 ? (
               <>
                 <ItemHeader
                   title={quiz.name}
@@ -222,8 +163,8 @@ const QuizPage = () => {
                         onComplete={onCompleteTimer}
                         size={120}
                         isPlaying
-                        duration={30}
-                        colorsTime={[30, 15, 5, 0]}
+                        duration={60}
+                        colorsTime={[60, 30, 10, 0]}
                         colors={['#69CCC7', '#F7B801', '#A30000', '#A30000']}>
                         {({ remainingTime, color }) => (
                           <Text
