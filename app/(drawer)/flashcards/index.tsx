@@ -1,71 +1,40 @@
-import { ActivityIndicator, View } from 'react-native';
-import BaseBackground from '../../../components/base-background';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import NavigateButton from '../../../components/navigate-button';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import BaseBackground from '../../../components/base-background';
+import NavigateButton from '../../../components/navigate-button';
 import { colors } from '../../../themes/colors';
 
-type FlashcardsType = {
-  id: string;
-  name: string;
-  questions: {
-    question: string;
-    answer: string;
-    difficulty: 'easy' | 'medium' | 'hard';
-  }[];
-};
-
-const FlashcardsPage = () => {
-  const [flashcards, setFlashcards] = useState<FlashcardsType[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const flashcardsRef = collection(db, 'flashcards');
-      const snapshot = await getDocs(flashcardsRef);
-      let data: FlashcardsType[] = [];
-      snapshot.forEach((doc) =>
-        data.push({
-          id: doc.id,
-          name: doc.data().name,
-          questions: doc.data().questions,
-        }),
-      );
-
-      setFlashcards(data);
-    })();
-  }, []);
-
+export default function FlashcardsPage() {
   return (
     <BaseBackground>
       <ScrollView>
-        <View style={{ gap: 24, padding: 8 }}>
-          {flashcards.length > 0 ? (
-            <>
-              {flashcards.map((flashcard) => (
-                <NavigateButton
-                  key={flashcard.id}
-                  to={`/flashcards/${flashcard.id}`}
-                  subject={flashcard.name}
-                  LeftIcon={
-                    <MaterialCommunityIcons
-                      name='card-bulleted'
-                      size={30}
-                      color={colors.primary}
-                    />
-                  }
-                />
-              ))}
-            </>
-          ) : (
-            <ActivityIndicator size='large' />
-          )}
+        <View style={{ gap: 12 }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Cards</Text>
+          <NavigateButton
+            to='flashcards/general-education'
+            subject='General Education'
+            LeftIcon={
+              <MaterialCommunityIcons
+                name='bookshelf'
+                size={30}
+                color={colors.primary}
+              />
+            }
+          />
+          <NavigateButton
+            to='flashcards/professional-education'
+            subject='Professional Education'
+            LeftIcon={
+              <MaterialCommunityIcons
+                name='bookshelf'
+                size={30}
+                color={colors.primary}
+              />
+            }
+          />
         </View>
       </ScrollView>
     </BaseBackground>
   );
-};
-
-export default FlashcardsPage;
+}

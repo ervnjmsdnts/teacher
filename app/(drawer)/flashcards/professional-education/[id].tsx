@@ -1,7 +1,5 @@
 import { Text, View } from 'react-native';
-import BaseBackground from '../../../components/base-background';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import ItemHeader from '../../../components/item-header';
 import { useEffect, useState } from 'react';
 import Animated, {
   interpolate,
@@ -10,10 +8,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { colors } from '../../../themes/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { colors } from '../../../../themes/colors';
+import { db } from '../../../../firebase';
+import BaseBackground from '../../../../components/base-background';
+import ItemHeader from '../../../../components/item-header';
 
 interface Props {
   question: string;
@@ -28,7 +28,6 @@ type FlashcardsType = {
   questions: {
     question: string;
     answer: string;
-    difficulty: 'easy' | 'medium' | 'hard';
   }[];
 };
 
@@ -130,6 +129,7 @@ const FlashcardPage = () => {
 
   const onNextCard = () => {
     if (currentCard < cards.questions.length - 1) {
+      onShowQuestion();
       setTextHidden(true);
       setTimeout(() => {
         setCurrentCard((prev) => prev + 1);

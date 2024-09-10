@@ -31,7 +31,7 @@ export default function SubjectPDF() {
 
   return (
     <BaseBackground>
-      <View style={{ position: 'relative', flex: 1, gap: 8 }}>
+      {/* <View style={{ position: 'relative', flex: 1, gap: 8 }}>
         <BackFloatingButton />
         <TouchableOpacity
           onPress={onReloadPDF}
@@ -66,7 +66,7 @@ export default function SubjectPDF() {
         ) : (
           <ActivityIndicator size='large' />
         )}
-      </View>
+      </View> */}
     </BaseBackground>
   );
 }

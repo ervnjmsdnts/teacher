@@ -1,26 +1,35 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { colors } from '../../../themes/colors';
 import { DrawerToggleButton } from '@react-navigation/drawer';
 
 type TabsProps = {
-  name: keyof typeof Ionicons.glyphMap;
+  name?: keyof typeof Ionicons.glyphMap;
   focused: boolean;
+  materialName?: keyof typeof MaterialCommunityIcons.glyphMap;
 };
 
-const Tab = ({ name, focused }: TabsProps) => {
+const Tab = ({ name, focused, materialName }: TabsProps) => {
   return (
     <View
       style={{
         alignItems: 'center',
         position: 'relative',
       }}>
-      <Ionicons
-        name={name}
-        size={28}
-        style={{ color: focused ? colors.primary : colors.grey }}
-      />
+      {materialName ? (
+        <MaterialCommunityIcons
+          size={28}
+          style={{ color: focused ? colors.primary : colors.grey }}
+          name={materialName}
+        />
+      ) : (
+        <Ionicons
+          name={name}
+          size={28}
+          style={{ color: focused ? colors.primary : colors.grey }}
+        />
+      )}
       {focused && (
         <View
           style={{
@@ -73,6 +82,15 @@ const TabsLayout = () => {
             <Tab name='analytics-sharp' focused={focused} />
           ),
           headerTitle: 'ANALYTICS',
+        }}
+      />
+      <Tabs.Screen
+        name='concepts'
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Tab materialName='tag-text' focused={focused} />
+          ),
+          headerTitle: 'CONCEPTS',
         }}
       />
     </Tabs>

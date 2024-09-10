@@ -94,6 +94,13 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         redirectPath='/analytics'
       />
       <CustomDrawerItem
+        isMaterialIcon
+        label='Learning Concepts'
+        materialIcon='tag-text'
+        path='/concepts'
+        redirectPath='/(drawer)/(tabs)/concepts'
+      />
+      <CustomDrawerItem
         label='About'
         ionIcon='information-circle'
         path='/about'
