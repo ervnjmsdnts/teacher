@@ -57,6 +57,13 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name='(drawer)' options={{ headerShown: false }} />
+      <Stack.Screen
+        name='modal'
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Terms of Service',
+        }}
+      />
     </Stack>
   );
 }

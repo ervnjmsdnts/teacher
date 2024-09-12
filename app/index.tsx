@@ -17,12 +17,15 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
+import { useRouter } from 'expo-router';
 
 export default function IndexPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+
+  const router = useRouter();
 
   const signUp = async () => {
     setLoading(true);
@@ -100,6 +103,9 @@ export default function IndexPage() {
                   </Text>
                 </TouchableOpacity>
               </View>
+              <TouchableOpacity onPress={() => router.push('/modal')}>
+                <Text style={styles.termsOfService}>Terms of Service</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -156,5 +162,12 @@ const styles = StyleSheet.create({
   noAccount: {
     fontSize: 16,
     color: 'white',
+  },
+  termsOfService: {
+    fontSize: 16,
+    color: colors.primary,
+    fontWeight: 'bold',
+    marginTop: 12,
+    textAlign: 'center',
   },
 });
