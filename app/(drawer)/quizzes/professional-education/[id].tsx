@@ -140,8 +140,8 @@ const QuizPage = () => {
                         onComplete={onCompleteTimer}
                         size={120}
                         isPlaying
-                        duration={30}
-                        colorsTime={[30, 15, 5, 0]}
+                        duration={60}
+                        colorsTime={[60, 30, 10, 0]}
                         colors={['#69CCC7', '#F7B801', '#A30000', '#A30000']}>
                         {({ remainingTime, color }) => (
                           <Text

@@ -24,7 +24,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1e374d"
       },
-      "package": "com.oduum.teacher"
+      "package": "com.oduum.teacher",
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,7 +45,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "ea94a7ea-8d9b-45ca-b2a7-ed690f51a88a"
+        "projectId": "782ef48a-2aa3-4694-945d-44034703e1d3"
       }
     }
   }

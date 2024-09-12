@@ -9,7 +9,7 @@ const terms = [
   {
     title: 'Intellectual Property Rights',
     description:
-      'The content provided in the App, including but not limited to quizzes, flashcards, educational materials, and other resources, may be sourced from third-party creators. We do not claim ownership of this third-party content. If you are the creator or owner of any material used in the App and do not wish for it to be included, please contact us immediately at [Contact Information]. Upon receiving your request, we will take appropriate action to remove the content from the App.',
+      'The content provided in the App, including but not limited to quizzes, flashcards, educational materials, and other resources, may be sourced from third-party creators. We do not claim ownership of this third-party content. If you are the creator or owner of any material used in the App and do not wish for it to be included, please contact us immediately at service@teacherapp.org. Upon receiving your request, we will take appropriate action to remove the content from the App.',
   },
   {
     title: 'Use of Content',
